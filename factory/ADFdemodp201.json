@@ -1,0 +1,9 @@
+{
+	"name": "ADFdemodp201",
+	"location": "southeastasia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "91a8d8db-7286-4768-bb67-c92b8841fd3a",
+		"tenantId": "a9e00100-954d-42a3-8dff-9d8c26cf11ab"
+	}
+}

@@ -1,0 +1,17 @@
+{
+	"name": "SqlServerwin10LS",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "integrated security=True;data source=VMwin10\\MSSQLSERVERDEV;initial catalog=adventureworksdw2020",
+			"userName": "vmwin10\\toan.phungquang",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI3ZGVlY2ZmYy03N2U5LTQ1NTQtYjIxZS0yZTkyNWU3MTMzZGQiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "integrationRuntimeOnPrem",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
