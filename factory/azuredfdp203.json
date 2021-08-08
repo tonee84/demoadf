@@ -1,0 +1,9 @@
+{
+	"name": "azuredfdp203",
+	"location": "southeastasia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "371703dc-e7ec-4abe-a4a9-bc6559885415",
+		"tenantId": "a9e00100-954d-42a3-8dff-9d8c26cf11ab"
+	}
+}
