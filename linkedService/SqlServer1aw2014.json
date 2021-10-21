@@ -1,0 +1,17 @@
+{
+	"name": "SqlServer1aw2014",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "integrated security=True;data source=vmwin10\\mssqlserverdev;initial catalog=adventureworks2014",
+			"userName": "vmwin10\\toan.phungquang",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJkNTEyYzQ5Yy00Yjk1LTRlZDgtOWE1Ny02MTA1ZmJkOWNkN2MiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "integrationRuntimeOnPrem",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
