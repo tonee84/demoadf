@@ -1,0 +1,17 @@
+{
+	"name": "SqlServerlocal",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "integrated security=True;data source=vmwin10\\mssqlserverdev;initial catalog=stackoverflow2010",
+			"userName": "vmwin10\\toan.phungquang",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI0ZTM3NDUzOC1jODY0LTRjZTUtOTZlMy1jYmZkNzc0YjM0NTIiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "integrationRuntimeOnPrem",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
