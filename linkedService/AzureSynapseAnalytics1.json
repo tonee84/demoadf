@@ -5,8 +5,8 @@
 		"annotations": [],
 		"type": "AzureSqlDW",
 		"typeProperties": {
-			"connectionString": "integrated security=False;encrypt=True;connection timeout=30;data source=asaworkspace0igw5xy.sql.azuresynapse.net;initial catalog=SQLPool01;user id=asa.sql.admin",
-			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQEIwQzRCQzdDLTFGRjgtNDg4MS04MkUyLUYxM0VFOEM5QkM3QV9jMDI1YTE1My1hYWIxLTQ2ZjEtOWE2ZC00NTM3NmY3NzM4YjEiDQp9"
+			"connectionString": "integrated security=False;encrypt=True;connection timeout=30;data source=asaworkspacek7j6ro8.sql.azuresynapse.net;initial catalog=SQLPool01;user id=asa.sql.admin",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQEIwQzRCQzdDLTFGRjgtNDg4MS04MkUyLUYxM0VFOEM5QkM3QV80ZDIxYzFmYi1hM2VhLTQ5Y2YtODMzYy0wMzZiOTQwZDM0MjMiDQp9"
 		}
 	}
 }
