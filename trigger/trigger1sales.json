@@ -1,0 +1,27 @@
+{
+	"name": "trigger1sales",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "pipeline1",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"tablename": "sales"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Hour",
+				"interval": 4,
+				"startTime": "2022-06-17T04:43:00Z",
+				"timeZone": "UTC"
+			}
+		}
+	}
+}
