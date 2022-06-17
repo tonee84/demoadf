@@ -99,6 +99,11 @@
 				}
 			}
 		],
+		"parameters": {
+			"tablename": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"lastPublishTime": "2021-06-02T03:40:38Z"
 	},
