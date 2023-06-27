@@ -1,0 +1,67 @@
+{
+	"name": "Dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText1",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Controltable_ds",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "AlterRow1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          Make as string,",
+				"          Model as string,",
+				"          Type as string,",
+				"          Origin as string,",
+				"          DriveTrain as string,",
+				"          Length as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     inferDriftedColumnTypes: true,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source1 alterRow(upsertIf(true())) ~> AlterRow1",
+				"AlterRow1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:true,",
+				"     upsertable:true,",
+				"     keys:['Make','Model'],",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          Make,",
+				"          Model,",
+				"          Type,",
+				"          Origin,",
+				"          DriveTrain,",
+				"          Length",
+				"     ),",
+				"     preCommands: [],",
+				"     postCommands: []) ~> sink1"
+			]
+		}
+	}
+}

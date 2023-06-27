@@ -1,0 +1,20 @@
+{
+	"name": "MetadataDrivenCopyTask_jhl_ControlDS",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "MetadataDrivenCopyTask_jhl_20230528"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "control",
+			"table": "MainControlTable_jhl"
+		}
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}

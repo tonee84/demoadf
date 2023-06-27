@@ -1,0 +1,70 @@
+{
+	"name": "DimEmp",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "EmpID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SurrogateKey",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Region",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Status",
+				"type": "nvarchar"
+			},
+			{
+				"name": "EmpFunction",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Level",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Role",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Startdate",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "EndDate",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "isCurrent",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "processTime",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "DimEmp"
+		}
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}

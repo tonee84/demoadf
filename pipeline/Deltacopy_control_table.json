@@ -1,0 +1,283 @@
+{
+	"name": "Deltacopy_control_table",
+	"properties": {
+		"activities": [
+			{
+				"name": "LookupListTables",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT\n       [ID] \n,        [ServerName] \n,        [DBname] \n,        [SchemaName] \n,        [TableName] \n,        [DateColumn]\n,        [LoadType] \n,        [FromDate] \n,        [ToProcess] \n,        [CreatedDate] \n,        [LastUpdatedDate]\n\nFROM [dbo].[COntrolTable]\nWhere [ToProcess]= 'Yes'",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "Controltable_ds",
+						"type": "DatasetReference",
+						"parameters": {
+							"schemaName": {
+								"value": "@pipeline().parameters.SchemaName",
+								"type": "Expression"
+							},
+							"DBName": {
+								"value": "@pipeline().parameters.DBName",
+								"type": "Expression"
+							}
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEachTable",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "LookupListTables",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('LookupListTables').output.value",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "LookupCurrentWaterMark",
+							"type": "Lookup",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat('select MAX(', item().DateColumn,') as WaterMarkValue FROM ', item(). SchemaName,'.',item().TableName)\n",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "Controltable_ds",
+									"type": "DatasetReference",
+									"parameters": {
+										"schemaName": {
+											"value": "@pipeline().parameters.SchemaName",
+											"type": "Expression"
+										},
+										"DBName": {
+											"value": "@pipeline().parameters.DBName",
+											"type": "Expression"
+										},
+										"tablename": {
+											"value": "@item().TableName",
+											"type": "Expression"
+										}
+									}
+								},
+								"firstRowOnly": false
+							}
+						},
+						{
+							"name": "Delta Copy From DB",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "LookupCurrentWaterMark",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@concat ('select * from ', item().SchemaName,'.', item().TableName ,\n' WHERE ', item().DateColumn,' > ','\"',item().FromDate,'\"' ,\n' AND ' ,item().DateColumn, ' <= ','\"',item().WaterMarkValue,'\"')",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "Controltable_ds",
+									"type": "DatasetReference",
+									"parameters": {
+										"schemaName": {
+											"value": "@pipeline().parameters.SchemaName",
+											"type": "Expression"
+										},
+										"DBName": {
+											"value": "@pipeline().parameters.DBName",
+											"type": "Expression"
+										},
+										"tablename": {
+											"value": "@item().tablename",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "genericLakeDS",
+									"type": "DatasetReference",
+									"parameters": {
+										"ContainerName": {
+											"value": "@pipeline().parameters.ContainerName",
+											"type": "Expression"
+										},
+										"FolderPath": {
+											"value": "@concat(pipeline().parameters.FolderPath,'/',item().TableName,'/','InputFiles')",
+											"type": "Expression"
+										},
+										"filename": {
+											"value": "@concat(item().TableName,'_',utcNow())",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "update watermark",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "Delta Copy From DB",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[SynapseUpdateWaterMark]",
+								"storedProcedureParameters": {
+									"DateFrom": {
+										"value": {
+											"value": "@activity('LookupCurrentWaterMark').output.firstRow.WaterMarkValue",
+											"type": "Expression"
+										},
+										"type": "DateTime"
+									},
+									"DBName": {
+										"value": {
+											"value": "@item().DBName",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"SchemaName": {
+										"value": {
+											"value": "@item().SchemaName",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"TableNAme": {
+										"value": {
+											"value": "@item().TableName",
+											"type": "Expression"
+										},
+										"type": "String"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "AzureSqlDatabase1",
+								"type": "LinkedServiceReference"
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"ServerName": {
+				"type": "string",
+				"defaultValue": "YourServerName"
+			},
+			"DBName": {
+				"type": "string",
+				"defaultValue": "YourDBName"
+			},
+			"ContainerName": {
+				"type": "string",
+				"defaultValue": "raw"
+			},
+			"FolderPath": {
+				"type": "string",
+				"defaultValue": "sales"
+			},
+			"FileName": {
+				"type": "string"
+			},
+			"SchemaName": {
+				"type": "string",
+				"defaultValue": "YourSchemaName"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-06-15T17:36:55Z"
+	},
+	"type": "Microsoft.Synapse/workspaces/pipelines"
+}

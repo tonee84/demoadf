@@ -1,0 +1,6 @@
+{
+	"name": "IntegrationRuntime1toonprem",
+	"properties": {
+		"type": "SelfHosted"
+	}
+}

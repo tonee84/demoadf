@@ -1,0 +1,31 @@
+{
+	"name": "Trigger_x8d",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipeline": {
+			"pipelineReference": {
+				"referenceName": "MetadataDrivenCopyTask_x8d_TopLevel",
+				"type": "PipelineReference"
+			},
+			"parameters": {
+				"windowStart": {
+					"type": "Expression",
+					"value": "@trigger().outputs.windowStartTime"
+				}
+			}
+		},
+		"type": "TumblingWindowTrigger",
+		"typeProperties": {
+			"frequency": "Hour",
+			"interval": 24,
+			"startTime": "2023-06-14T15:05:00Z",
+			"delay": "00:00:00",
+			"maxConcurrency": 50,
+			"retryPolicy": {
+				"intervalInSeconds": 30
+			},
+			"dependsOn": []
+		}
+	}
+}

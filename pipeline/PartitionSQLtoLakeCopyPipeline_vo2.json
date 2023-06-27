@@ -1,0 +1,80 @@
+{
+	"name": "PartitionSQLtoLakeCopyPipeline_vo2",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy_vo2",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "SalesLT.SalesOrderDetail"
+					},
+					{
+						"name": "Destination",
+						"value": "partition/@{formatDateTime(pipeline().parameters.windowStart,'yy')}/@{formatDateTime(pipeline().parameters.windowStart,'MM')}/@{formatDateTime(pipeline().parameters.windowStart,'dd')}/salesorder.csv"
+					}
+				],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"validateDataConsistency": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "SourceDataset_vo2",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DestinationDataset_vo2",
+						"type": "DatasetReference",
+						"parameters": {
+							"cw_folderPath": "@{formatDateTime(pipeline().parameters.windowStart,'yy')}/@{formatDateTime(pipeline().parameters.windowStart,'MM')}/@{formatDateTime(pipeline().parameters.windowStart,'dd')}"
+						}
+					}
+				]
+			}
+		],
+		"parameters": {
+			"windowStart": {
+				"type": "String",
+				"defaultValue": "2023/06/14 21:01"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-06-14T14:34:33Z"
+	},
+	"type": "Microsoft.Synapse/workspaces/pipelines"
+}

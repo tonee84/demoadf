@@ -1,0 +1,20 @@
+{
+	"name": "MetadataDrivenCopyTask_w89_ControlDS",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "MetadataDrivenCopyTask_w89_20230615"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "MainControlTable_208"
+		}
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}

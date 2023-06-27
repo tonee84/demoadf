@@ -1,0 +1,125 @@
+{
+	"name": "Copy multiple tables in Bulk w Lookup Foreach",
+	"properties": {
+		"activities": [
+			{
+				"name": "list tables",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT\n  *\nFROM\n  sqldb01.INFORMATION_SCHEMA.TABLES\nWHERE table_type = 'BASE TABLE'",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "Tablelist_ds",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "For Each table",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "list tables",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('list tables').output.value",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Export table",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "sqltable_ds",
+									"type": "DatasetReference",
+									"parameters": {
+										"tableName": {
+											"value": "@item().table_name",
+											"type": "Expression"
+										},
+										"schemaName": {
+											"value": "@item().table_schema",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "CSVTable_ds",
+									"type": "DatasetReference",
+									"parameters": {
+										"fileName": {
+											"value": "@concat(item().table_schema,'_',item().table_name,'.csv')",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2023-05-28T09:22:39Z"
+	},
+	"type": "Microsoft.Synapse/workspaces/pipelines"
+}

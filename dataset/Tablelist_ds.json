@@ -1,0 +1,13 @@
+{
+	"name": "Tablelist_ds",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}
