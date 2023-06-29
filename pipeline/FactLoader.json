@@ -1,9 +1,9 @@
 {
-	"name": "Pipeline 2",
+	"name": "FactLoader",
 	"properties": {
 		"activities": [
 			{
-				"name": "Data flow1",
+				"name": "LoadFact",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -16,24 +16,8 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "Dataflow1",
-						"type": "DataFlowReference",
-						"datasetParameters": {
-							"sink1": {
-								"schemaName": "dbo",
-								"DBName": "YourDBName",
-								"tablename": "cars"
-							}
-						},
-						"linkedServiceParameters": {
-							"sink1": {
-								"schemaLinkedService": {
-									"schemaName": "YourSchemaName",
-									"DBName": "YourDBName",
-									"tablename": "YourTableName"
-								}
-							}
-						}
+						"referenceName": "DF-FactLoader",
+						"type": "DataFlowReference"
 					},
 					"compute": {
 						"coreCount": 8,
