@@ -1,0 +1,67 @@
+{
+	"name": "cleanAddresses",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "address_ds",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "stg_ds",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "cleanAddress"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          AddressID as string,",
+				"          Address1 as string,",
+				"          Address2 as string,",
+				"          City as string,",
+				"          {_col4_} as string,",
+				"          {_col5_} as string,",
+				"          {_col6_} as string,",
+				"          {_col7_} as string,",
+				"          {_col8_} as string",
+				"     ),",
+				"     allowSchemaDrift: false,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source1 derive(each(match(type == 'string'), $$ + '_clean' = trim(trim($$, '.'),' '))) ~> cleanAddress",
+				"cleanAddress sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          Make as string,",
+				"          Model as string,",
+				"          Type as string,",
+				"          Origin as string,",
+				"          DriveTrain as string,",
+				"          Length as decimal(18,0)",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     recreate:true,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+			]
+		}
+	}
+}
