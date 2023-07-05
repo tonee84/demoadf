@@ -1,0 +1,16 @@
+{
+	"name": "DWHAW2020",
+	"type": "Microsoft.Synapse/workspaces/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"connectionString": "integrated security=False;encrypt=True;connection timeout=30;data source=da-100.database.windows.net;initial catalog=AdventureWorksDW2020;user id=sadmin",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIlNZTkFQU0VANjM1Q0M0NTgtMDRGNi00NkY4LUJFREMtODMzRUFFOTExOUNDX2NkOGRkYWUwLWYyZDItNGE0NS1hNGEzLWRhMjE5MDFmZjdlOCINCn0="
+		},
+		"connectVia": {
+			"referenceName": "AutoResolveIntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
