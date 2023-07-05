@@ -3,7 +3,37 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Data flow1",
+				"name": "Stored procedure1",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[Dim_Date_update]",
+					"storedProcedureParameters": {
+						"CurrentDate": {
+							"value": "2020-01-01",
+							"type": "DateTime"
+						},
+						"EndDate": {
+							"value": "2021-01-01",
+							"type": "DateTime"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Dataflow1",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -18,11 +48,11 @@
 					"dataflow": {
 						"referenceName": "Dataflow1",
 						"type": "DataFlowReference",
-						"linkedServiceParameters": {
+						"datasetParameters": {
 							"sink1": {
-								"schemaLinkedService": {
-									"fileName": "cars.csv"
-								}
+								"schemaName": "YourSchemaName",
+								"DBName": "YourDBName",
+								"tablename": "YourTableName"
 							}
 						}
 					},
@@ -30,7 +60,10 @@
 						"coreCount": 8,
 						"computeType": "General"
 					},
-					"traceLevel": "Fine"
+					"traceLevel": "Fine",
+					"continuationSettings": {
+						"customizedCheckpointKey": "f2c5b361-4be5-42c1-974c-f494d4dc6ee8"
+					}
 				}
 			}
 		],

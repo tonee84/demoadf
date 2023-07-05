@@ -10,6 +10,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "source1"
+				},
+				{
+					"dataset": {
+						"referenceName": "stg_ds",
+						"type": "DatasetReference"
+					},
+					"name": "source2"
 				}
 			],
 			"sinks": [
@@ -19,11 +26,17 @@
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
+				},
+				{
+					"name": "sink2"
 				}
 			],
 			"transformations": [
 				{
 					"name": "AlterRow1"
+				},
+				{
+					"name": "SummaryStats"
 				}
 			],
 			"scriptLines": [
@@ -39,7 +52,24 @@
 				"     validateSchema: false,",
 				"     inferDriftedColumnTypes: true,",
 				"     ignoreNoFilesFound: false) ~> source1",
+				"source(output(",
+				"          Make as string,",
+				"          Model as string,",
+				"          Type as string,",
+				"          Origin as string,",
+				"          DriveTrain as string,",
+				"          Length as short,",
+				"          DWHash as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     waterMarkColumn: 'Length',",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source2",
 				"source1 alterRow(upsertIf(true())) ~> AlterRow1",
+				"source2 aggregate(each(match(true()), $$+'_NotNull' = countIf(!isNull($$)), $$ + '_Null' = countIf(isNull($$))),",
+				"          each(match(type=='double'||type=='integer'||type=='short'||type=='decimal'), $$+'_stddev' = round(stddev($$),2), $$ + '_min' = min ($$), $$ + '_max' = max($$), $$ + '_average' = round(avg($$),2), $$ + '_variance' = round(variance($$),2)),",
+				"          each(match(type=='string'), $$+'_maxLength' = max(length($$)))) ~> SummaryStats",
 				"AlterRow1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
@@ -60,7 +90,11 @@
 				"          Length",
 				"     ),",
 				"     preCommands: [],",
-				"     postCommands: []) ~> sink1"
+				"     postCommands: []) ~> sink1",
+				"SummaryStats sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink2"
 			]
 		}
 	}
