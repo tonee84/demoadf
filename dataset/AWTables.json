@@ -7,14 +7,26 @@
 		},
 		"parameters": {
 			"schemaName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "person"
 			},
 			"TableName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "address"
 			}
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
-		"schema": []
+		"schema": [],
+		"typeProperties": {
+			"schema": {
+				"value": "@dataset().schemaName",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().TableName",
+				"type": "Expression"
+			}
+		}
 	}
 }
