@@ -1,0 +1,20 @@
+{
+	"name": "AWTables",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Adventureworks",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"schemaName": {
+				"type": "string"
+			},
+			"TableName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	}
+}
