@@ -187,7 +187,7 @@
 								},
 								"method": "POST",
 								"body": {
-									"value": "{\n    \"title\": \"Pipeline Staging DW finish\",\n    \"message\": \"Successfully, rows equal\",\n    \"RowsRead\":\"@{activity('Copy data to SQL').output.rowsRead}\",\n    \"RowsCopied\": \"@{activity('Copy data to SQL').output.rowsCopied}\",\n    \"dataFactoryName\": \"@{pipeline().DataFactory}\",\n    \"pipelineName\": \"@{pipeline().Pipeline}\",\n    \"pipelineRunId\": \"@{pipeline().RunId}\",\n    \"time\": \"@{utcNow()}\"\n}",
+									"value": "{\n    \"title\": \"Pipeline Staging DW finish\",\n    \"message\": \"Successfully, rows equal\",\n    \"RowsRead\":\"@{activity('Load Staing data to DW').output.rowsRead}\",\n    \"RowsCopied\": \"@{activity('Load Staing data to DW').output.rowsCopied}\",\n    \"dataFactoryName\": \"@{pipeline().DataFactory}\",\n    \"pipelineName\": \"@{pipeline().Pipeline}\",\n    \"pipelineRunId\": \"@{pipeline().RunId}\",\n    \"time\": \"@{utcNow()}\"\n}",
 									"type": "Expression"
 								}
 							}
