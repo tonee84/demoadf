@@ -80,7 +80,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@equals(activity('backup').output.rowsRead,activity('backup').output.rowsCopied)",
+						"value": "@equals(activity('Staging').output.rowsRead,activity('Staging').output.rowsCopied)",
 						"type": "Expression"
 					},
 					"ifFalseActivities": [
