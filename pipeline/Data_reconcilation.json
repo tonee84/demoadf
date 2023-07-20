@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "backup",
+				"name": "Staging",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -71,7 +71,7 @@
 				"type": "IfCondition",
 				"dependsOn": [
 					{
-						"activity": "backup",
+						"activity": "Staging",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -97,7 +97,7 @@
 					],
 					"ifTrueActivities": [
 						{
-							"name": "Copy data to SQL",
+							"name": "Load Staing data to DW",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -165,7 +165,7 @@
 							"type": "WebActivity",
 							"dependsOn": [
 								{
-									"activity": "Copy data to SQL",
+									"activity": "Load Staing data to DW",
 									"dependencyConditions": [
 										"Completed"
 									]
