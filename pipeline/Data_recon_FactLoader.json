@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "select count(*)\nfrom [Production].[ProductCategory]",
+						"sqlReaderQuery": "select sum(ProductCategoryID)\nfrom [Production].[ProductCategory]",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -42,7 +42,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "Select count (*)\nFrom DimProductCategory",
+						"sqlReaderQuery": "Select sum(ProductCategoryKey)\nFrom DimProductCategory",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
